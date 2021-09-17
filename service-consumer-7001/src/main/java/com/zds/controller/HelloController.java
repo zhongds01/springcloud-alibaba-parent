@@ -14,8 +14,12 @@ import org.springframework.web.client.RestTemplate;
  */
 @RestController
 public class HelloController {
+    private final RestTemplate restTemplate;
+
     @Autowired
-    private RestTemplate restTemplate;
+    public HelloController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @GetMapping("/consumer/hello/{value}")
     public String hello(@PathVariable String value) {
