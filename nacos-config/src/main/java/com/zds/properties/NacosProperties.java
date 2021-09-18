@@ -15,5 +15,5 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 public class NacosProperties {
     private String serverUrl;
     private String port;
-    private boolean isAlive;
+    private boolean alive;
 }

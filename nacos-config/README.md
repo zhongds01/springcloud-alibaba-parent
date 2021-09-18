@@ -166,9 +166,6 @@ spring.cloud.nacos.config.extension-configs[1].refresh=true
 >
 > - `spring.cloud.nacos.config.extension-configs[n].data-id` 的值必须带文件扩展名，文件扩展名既可支持 properties，又可以支持 yaml/yml。 此时 `spring.cloud.nacos.config.file-extension` 的配置对自定义扩展配置的 data Id 文件扩展名没有影响。
 >
-> - 自定义的data-id不要与默认的${spring.application.name}一样，否则自定义的不生效。
->
->   比如我把上面的spring.cloud.nacos.config.extension-configs[1].data-id=ext-config1.yaml中的data-id=ext-config1.yaml修改为nacos-config.yaml，那么整个extension-configs[1]都不生效，反而extension-configs[0]会生效。
 
 **优点**
 
@@ -182,6 +179,33 @@ spring.cloud.nacos.config.extension-configs[1].refresh=true
 > - B: 通过 `spring.cloud.nacos.config.extension-configs[n].data-id` 的方式支持多个扩展 Data Id 的配置
 > - C: 通过内部相关规则(应用名、应用名+ Profile )自动生成相关的 Data Id 配置
 > - 当三种方式共同使用时，他们的一个优先级关系是:A < B < C
+> - 优先级低不代表该文件不加载，而是该文件中存在和优先级高文件中的配置一样时，优先级高的文件生效。
+
+**优先级案例**
+
+```properties
+spring.application.name=nacos-config
+spring.cloud.nacos.config.file-extension=yaml
+spring.cloud.nacos.config.group=NACOS_TEST_GROUP
+spring.profiles.active=dev
+
+spring.cloud.nacos.config.shared-configs[0].data-id=shared-config0.yaml
+spring.cloud.nacos.config.shared-configs[0].group=SHARED_GROUP
+spring.cloud.nacos.config.shared-configs[0].refresh=true
+
+spring.cloud.nacos.config.extension-configs[0].data-id=ext-config0.yaml
+spring.cloud.nacos.config.extension-configs[1].data-id=nacos-config.yaml
+spring.cloud.nacos.config.extension-configs[1].group=DEFAULT_GROUP
+spring.cloud.nacos.config.extension-configs[1].refresh=true
+```
+
+> 以上配置中，会加载以下文件，且优先级由上往下依次递减
+>
+> - NACOS_TEST_GROUP下的nacos-config-dev.yaml
+> - NACOS_TEST_GROUP下的nacos-config.yaml
+> - DEFAULT_GROUP下的nacos-config.yaml
+> - DEFAULT_GROUP下的ext-config0.yaml
+> - SHARED_GROUP下的shared-config0.yaml
 
 ## 9、关闭nacos-config功能
 
@@ -191,3 +215,23 @@ spring.cloud.nacos.config.enabled = false
 
 ## 10、nacos-config中的其他配置
 
+摘自官网介绍
+
+| Configuration                                                | Key                                            | Default Value   | Description                                                  |
+| ------------------------------------------------------------ | ---------------------------------------------- | --------------- | ------------------------------------------------------------ |
+| Server address                                               | `spring.cloud.nacos.config.server-addr`        |                 | IP and port of the Nacos Server listener                     |
+| Dataid from nacos config                                     | `spring.cloud.nacos.config.name`               |                 | First take the prefix, then go to the name, and finally take spring.application.name |
+| Dataid from nacos config                                     | `spring.cloud.nacos.config.prefix`             |                 | First take the prefix, then go to the name, and finally take spring.application.name |
+| Encode for nacos config content                              | `spring.cloud.nacos.config.encode`             |                 | Encode for nacos config content                              |
+| GROUP for nacos config                                       | `spring.cloud.nacos.config.group`              | `DEFAULT_GROUP` | GROUP for nacos config                                       |
+| The suffix of nacos config dataId, also the file extension of config content. | `spring.cloud.nacos.config.fileExtension`      | `properties`    | The suffix of nacos config dataId, also the file extension of config content(now support properties or yaml(yml)) |
+| Timeout for get config from nacos                            | `spring.cloud.nacos.config.timeout`            | `3000`          | Timeout for get config from nacos                            |
+| Endpoint                                                     | `spring.cloud.nacos.config.endpoint`           |                 | Endpoint                                                     |
+| Namespace                                                    | `spring.cloud.nacos.config.namespace`          |                 | Namespace                                                    |
+| AccessKey                                                    | `spring.cloud.nacos.config.accessKey`          |                 | Alibaba Cloud account accesskey                              |
+| SecretKey                                                    | `spring.cloud.nacos.config.secretKey`          |                 | Alibaba Cloud account secretkey                              |
+| The context path of Nacos Server                             | `spring.cloud.nacos.config.contextPath`        |                 | The context path of Nacos Server                             |
+| Cluster name                                                 | `spring.cloud.nacos.config.clusterName`        |                 | Cluster name                                                 |
+| Dataid for Shared Configuration                              | `spring.cloud.nacos.config.sharedDataids`      |                 | Dataid for Shared Configuration, split by ","                |
+| Dynamic refresh dataid for Shared Configuration              | `spring.cloud.nacos.config.refreshableDataids` |                 | Dynamic refresh dataid for Shared Configuration, split by "," |
+| custom dataid                                                | `spring.cloud.nacos.config.extConfig`          |                 | It’s a List，build up by `Config` POJO. `Config` has 3 attributes, `dataId`, `group` and `refresh` |

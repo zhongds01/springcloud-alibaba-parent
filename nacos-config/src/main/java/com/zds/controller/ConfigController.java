@@ -1,7 +1,5 @@
 package com.zds.controller;
 
-import com.alibaba.cloud.nacos.NacosConfigProperties;
-import com.alibaba.nacos.api.config.annotation.NacosValue;
 import com.zds.properties.NacosProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -43,12 +41,21 @@ public class ConfigController {
     @Value("${nacos.test.port}")
     private String port;
 
-    @Value("${nacos.test.is-alive}")
-    private boolean isAlive;
+    @Value("${nacos.test.alive}")
+    private boolean alive;
+
+    @Value("${user.name}")
+    private String userName;
+
+    @Value("${shared}")
+    private boolean shared;
+
+    @Value("${user.namespace}")
+    private String nameSpace;
 
     @GetMapping("/get")
     public String get() {
-        return serverUrl + ":" + port + " status is : " + isAlive;
+        return serverUrl + ":" + port + " status is : " + alive;
 //        return properties.getServerUrl() + ":" + properties.getPort() + " status is : " + properties.isAlive();
     }
 }
