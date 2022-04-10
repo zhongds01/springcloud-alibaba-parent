@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        prefix: ${spring.application.name}
+        file-extension: yaml
+        refresh-enabled: true
+        enabled: true
+        group: NACOS_TEST_GROUP
+  application:
+    name: nacos-config
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

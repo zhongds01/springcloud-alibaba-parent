@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package grpc;
+
+// 以外部类模式生成代码
+option java_multiple_files = true;
+
+// 指定包路径
+option java_package = "com.zds.grpc.grpc";
+
+// 外部类名称
+option java_outer_classname = "CustomerInfoProto";
+
+service CustomerInfoService {
+    rpc GetCustomerInfoByName(CustomerRequest) returns (CustomerResponse) {}
+}
+
+message CustomerRequest {
+    string name = 1;
+}
+
+message CustomerResponse {
+    string code = 1;
+    CustomerInfo data = 2;
+}
+
+message CustomerInfo {
+    string name = 1;
+    string sex = 2;
+}

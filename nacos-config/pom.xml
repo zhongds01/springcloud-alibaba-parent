@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.zds</groupId>
         <artifactId>springcloud-alibaba-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <groupId>com.zds</groupId>
     <artifactId>nacos-config</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>nacos-config</name>
     <description>nacos配置中心</description>
     <properties>
@@ -20,6 +20,11 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
     </dependencies>
 

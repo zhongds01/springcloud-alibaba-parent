@@ -32,30 +32,30 @@ public class ConfigController {
     @Value("${nacos.test.server-url}")
     private String serverUrl;
 
-    @Value("${name}")
-    private String name;
+//    @Value("${name}")
+//    private String name;
 
-    @Value("${group}")
-    private String group;
+//    @Value("${group}")
+//    private String group;
 
-    @Value("${nacos.test.port}")
-    private String port;
-
-    @Value("${nacos.test.alive}")
-    private boolean alive;
-
-    @Value("${user.name}")
-    private String userName;
-
-    @Value("${shared}")
-    private boolean shared;
-
-    @Value("${user.namespace}")
-    private String nameSpace;
+//    @Value("${nacos.test.port}")
+//    private String port;
+//
+//    @Value("${nacos.test.alive}")
+//    private boolean alive;
+//
+//    @Value("${user.name}")
+//    private String userName;
+//
+//    @Value("${shared}")
+//    private boolean shared;
+//
+//    @Value("${user.namespace}")
+//    private String nameSpace;
 
     @GetMapping("/get")
     public String get() {
-        return serverUrl + ":" + port + " status is : " + alive;
+        return "serverUrl" + ":" + "port" + " status is : " + "alive";
 //        return properties.getServerUrl() + ":" + properties.getPort() + " status is : " + properties.isAlive();
     }
 }

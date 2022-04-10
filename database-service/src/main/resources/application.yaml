@@ -1,0 +1,28 @@
+grpc:
+  server:
+    port: 0
+#    # 客户端配置
+#    GLOBAL:
+#      address: 'static://127.0.0.1:9090'
+#      enable-keep-alive: true
+#      keep-alive-without-calls: true
+#      negotiation-type: plaintext
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: zhongdongsheng
+    password: 123456
+    url: jdbc:mysql://localhost:3306/tutu?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+  application:
+    name: database-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        enabled: true
+mybatis:
+  mapper-locations: com/zds/mapper/*.xml
+  type-aliases-package: com.zds.entity
+  configuration:
+    map-underscore-to-camel-case: true
+

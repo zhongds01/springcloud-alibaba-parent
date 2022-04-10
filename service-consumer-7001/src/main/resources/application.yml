@@ -7,3 +7,11 @@ spring:
         server-addr: 127.0.0.1:8848
 server:
   port: 7001
+grpc:
+  client:
+    database-service:
+#      # 如果不从nacos注册中心动态发现服务,需要手动指定grpc服务的地址
+#      address: 'static://127.0.0.1:9090'
+      enable-keep-alive: true
+      keep-alive-without-calls: true
+      negotiation-type: plaintext

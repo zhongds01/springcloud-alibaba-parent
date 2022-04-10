@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 开启通过服务名进行服务调用
+          lower-case-service-id: true # 服务名不区分大小写
+      routes:
+#        - id: database-service
+#          uri: lb://database-service
+#          predicates:
+#            - Path=/**
+        - id: service-provider1
+          uri: lb://service-provider
+          predicates:
+            - Path=/**
+        - id: service-consumer1
+          uri: lb://service-consumer
+          predicates:
+            - Path=/**
+      default-filters:
+
+server:
+  port: 9200
