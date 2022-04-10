@@ -15,11 +15,12 @@ spring:
 #          uri: lb://database-service
 #          predicates:
 #            - Path=/**
-        - id: service-provider1
+        # id全局唯一即可
+        - id: service-provider
           uri: lb://service-provider
           predicates:
             - Path=/**
-        - id: service-consumer1
+        - id: service-consumer
           uri: lb://service-consumer
           predicates:
             - Path=/**
