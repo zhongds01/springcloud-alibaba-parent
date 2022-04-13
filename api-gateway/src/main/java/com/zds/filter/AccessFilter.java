@@ -2,6 +2,7 @@ package com.zds.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.zds.properties.PermissionProperties;
+import com.zds.util.auth.JwtUtils;
 import com.zds.vo.response.BaseResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -44,31 +46,13 @@ public class AccessFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // url白名单过滤
-        List<String> whiteUrls = permissionProperties.getWhiteUrl();
-        boolean isWhiteUrl = false;
-        for (String whiteUrl : whiteUrls) {
-            String requestUrl = exchange.getRequest().getPath().toString();
-            if (requestUrl.equals(whiteUrl)) {
-                isWhiteUrl = true;
-                break;
-            }
-        }
+        boolean isWhiteUrl = checkWhiteUrl(exchange);
         if (isWhiteUrl) {
             DEBUG_LOG.info("Request url is in whiteUrl list");
             return chain.filter(exchange);
         }
         // ip白名单过滤
-        List<String> whiteIPs = permissionProperties.getWhiteIP();
-        boolean isWhiteIP = false;
-        for (String whiteIP : whiteIPs) {
-            String requestIP = exchange.getRequest().getRemoteAddress().getAddress()
-                .getHostAddress();
-            if (requestIP.equals(whiteIP)) {
-                isWhiteIP = true;
-                break;
-            }
-        }
-
+        boolean isWhiteIP = checkWhiteIP(exchange);
         if (isWhiteIP) {
             DEBUG_LOG.info("Request Ip is in whiteIP list");
             return chain.filter(exchange);
@@ -98,6 +82,18 @@ public class AccessFilter implements GlobalFilter, Ordered {
                     DEBUG_LOG.error("Auth Failed, sign Value is different");
                     return authFailed(exchange);
                 }
+            } else if (StringUtils.equals("JWT", authType)) {
+                List<String> jwtToken = headers.get("JWTToken");
+                String token = jwtToken != null ? jwtToken.get(0) : "";
+                String verify = JwtUtils.verify(token);
+                String s = new String(Base64Utils.decode(verify.getBytes(StandardCharsets.UTF_8)));
+                if (StringUtils.isNotBlank(s)) {
+                    DEBUG_LOG.info("Auth Success!");
+                    return chain.filter(exchange);
+                } else {
+                    DEBUG_LOG.error("Auth Failed, token value is invalidate");
+                    return authFailed(exchange);
+                }
             } else {
                 // 请求头中没传加密类型，返回失败
                 DEBUG_LOG.error("Auth Failed, Authorization Value Has No AuthType");
@@ -107,6 +103,29 @@ public class AccessFilter implements GlobalFilter, Ordered {
             DEBUG_LOG.error("Auth Failed, Request Header Has No Authorization");
             return authFailed(exchange);
         }
+    }
+
+    private boolean checkWhiteUrl(ServerWebExchange exchange) {
+        List<String> whiteUrls = permissionProperties.getWhiteUrl();
+        for (String whiteUrl : whiteUrls) {
+            String requestUrl = exchange.getRequest().getPath().toString();
+            if (requestUrl.equals(whiteUrl)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkWhiteIP(ServerWebExchange exchange) {
+        List<String> whiteIPs = permissionProperties.getWhiteIP();
+        for (String whiteIP : whiteIPs) {
+            String requestIP = exchange.getRequest().getRemoteAddress().getAddress()
+                .getHostAddress();
+            if (requestIP.equals(whiteIP)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Mono<Void> authFailed(ServerWebExchange exchange) {
