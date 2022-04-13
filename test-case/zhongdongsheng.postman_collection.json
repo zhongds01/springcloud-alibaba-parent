@@ -1,0 +1,275 @@
+{
+	"info": {
+		"_postman_id": "453d2adf-f2fd-412b-a0ab-47a9b0bc8f4c",
+		"name": "zhongdongsheng",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "customer-test",
+			"item": [
+				{
+					"name": "根据名称查询客户信息8080",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8080/customer/query",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "根据名称查询客户信息7001",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"zhongdongsheng\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:7001/customer/query",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7001",
+							"path": [
+								"customer",
+								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "nacos-config",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5545/get",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5545",
+							"path": [
+								"get"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api-gateway",
+			"item": [
+				{
+					"name": "根据名称查询客户信息7001",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var appID = \"zhongdongsheng\";\r",
+									"var secret_key = \"ASDFGZDGBVNH\";\r",
+									"// JWT鉴权模拟\r",
+									"var token = \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiemhvbmdkb25nc2hlbmciLCJpZCI6IjEifQ.XzOe3y3fI65OoODeRp6zRKPiQHUr_YlSdUa-SHmK6qA\";\r",
+									"// 指定加密方式\r",
+									"// var authType = \"MD5\";\r",
+									"var authType = \"JWT\";\r",
+									"// 获取当前北京时间\r",
+									"// var moment = require('moment');\r",
+									"// var beijingTime = moment().format(\"YYYY-MM-DD HH:mm:ss\");\r",
+									"// console.log(\"beijingTime: \" + beijingTime);\r",
+									"// 获取UNIX时间戳,精确到毫秒\r",
+									"var timestamp = new Date().getTime();\r",
+									"// console.log(\"utcTime: \" + timestamp);\r",
+									"// 请求消息体\r",
+									"var requestBody = request.data;\r",
+									"// 转换为json对象\r",
+									"var jsonObj = JSON.parse(requestBody);\r",
+									"console.log(\"unsorted jsonStr: \" + JSON.stringify(jsonObj));\r",
+									"// 将请求消息体中的参数按名称排序\r",
+									"var arr = [];\r",
+									"arr = Object.keys(jsonObj).sort()\r",
+									"// 将排序后的key重新转换为json对象\r",
+									"var newJsonObj = {};\r",
+									"for(var i = 0; i< arr.length; i++) {\r",
+									"    newJsonObj[arr[i]] = jsonObj[arr[i]];\r",
+									"}\r",
+									"var jsonStr = JSON.stringify(newJsonObj);\r",
+									"console.log(\"sorted jsonStr: \" + jsonStr);\r",
+									"\r",
+									"// timestamp + 排序后的请求消息体字符串 + secret_key 拼接后进行MD5加密\r",
+									"var md5Value = CryptoJS.MD5(timestamp + \"\" + secret_key).toString();\r",
+									"// secret_key不在请求体中传递，服务端根据appID查询出对于的secret_key\r",
+									"pm.globals.set(\"appID\", appID);\r",
+									"pm.globals.set(\"sign\", md5Value);\r",
+									"pm.globals.set(\"timestamp\", timestamp);\r",
+									"pm.globals.set(\"authorization\", authType);\r",
+									"pm.globals.set(\"jwtToken\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Sign",
+								"value": "{{sign}}",
+								"type": "default"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{authorization}}",
+								"type": "default"
+							},
+							{
+								"key": "Timestamp",
+								"value": "{{timestamp}}",
+								"type": "default"
+							},
+							{
+								"key": "AppID",
+								"value": "{{appID}}",
+								"type": "default"
+							},
+							{
+								"key": "JWTToken",
+								"value": "{{jwtToken}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"zhongdongsheng\",\r\n    \"name\": \"zhongdongsheng\",\r\n    \"tel\": \"123456\",\r\n    \"sex\": \"男\",\r\n    \"tx\": \"12466\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:9200/customer/query",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "9200",
+							"path": [
+								"customer",
+								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "service-provider",
+			"item": [
+				{
+					"name": "hello",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var appID = \"zhongdongsheng\";\r",
+									"var utcNow = new Date().getUTCDate();\r",
+									"\r",
+									"// 获取当前北京时间\r",
+									"var moment = require('moment');\r",
+									"var beijingTime = moment().format(\"YYYY-MM-DD H:mm:ss\");\r",
+									"console.log(beijingTime);\r",
+									"// var formatTime01 = moment(nowTime).format('YYYY-MM-DD HH:mm:ss');\r",
+									"\r",
+									"// console.log(x);\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"var md5Value = CryptoJS.MD5(appID).toString();\r",
+									"pm.globals.set(\"AppID\", appID);\r",
+									"pm.globals.set(\"SignMD5\", md5Value);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "AppID",
+								"value": "{{AppID}}",
+								"type": "default"
+							},
+							{
+								"key": "SignMD5",
+								"value": "{{SignMD5}}",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:9200/service-provider/provider/hello/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "9200",
+							"path": [
+								"service-provider",
+								"provider",
+								"hello",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
