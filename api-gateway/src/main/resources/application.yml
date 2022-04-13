@@ -16,15 +16,23 @@ spring:
 #          predicates:
 #            - Path=/**
         # id全局唯一即可
-        - id: service-provider
-          uri: lb://service-provider
-          predicates:
-            - Path=/**
+#        - id: service-provider
+#          uri: lb://service-provider
+#          predicates:
+#            - Path=/**
         - id: service-consumer
           uri: lb://service-consumer
           predicates:
             - Path=/**
       default-filters:
 
+  auth:
+    whiteIP:
+      - 192.168.1.128
+    whiteUrl:
+      - /customer/query1
+      - /customer/query2
+
 server:
   port: 9200
+
