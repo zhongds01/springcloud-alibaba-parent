@@ -28,10 +28,8 @@ spring:
 
   auth:
     whiteIP:
-      - 192.168.1.128
-    whiteUrl:
-      - /customer/query1
-      - /customer/query2
+      - 127.0.0.1
+    whiteUrl: /customer/query1, /customer/query2
 
 server:
   port: 9200

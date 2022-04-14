@@ -1,11 +1,13 @@
 package com.zds.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.zds.enums.BaseResponseEnum;
 import com.zds.properties.PermissionProperties;
 import com.zds.util.auth.JwtUtils;
 import com.zds.vo.response.BaseResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.function.Predicate;
 import javax.annotation.Resource;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -107,34 +109,25 @@ public class AccessFilter implements GlobalFilter, Ordered {
 
     private boolean checkWhiteUrl(ServerWebExchange exchange) {
         List<String> whiteUrls = permissionProperties.getWhiteUrl();
-        for (String whiteUrl : whiteUrls) {
-            String requestUrl = exchange.getRequest().getPath().toString();
-            if (requestUrl.equals(whiteUrl)) {
-                return true;
-            }
-        }
-        return false;
+        return whiteUrls.stream()
+            .anyMatch(
+                whiteIP -> whiteIP.equals(exchange.getRequest().getPath().toString()));
     }
 
     private boolean checkWhiteIP(ServerWebExchange exchange) {
         List<String> whiteIPs = permissionProperties.getWhiteIP();
-        for (String whiteIP : whiteIPs) {
-            String requestIP = exchange.getRequest().getRemoteAddress().getAddress()
-                .getHostAddress();
-            if (requestIP.equals(whiteIP)) {
-                return true;
-            }
-        }
-        return false;
+        return whiteIPs.stream()
+            .anyMatch(
+                whiteIP -> whiteIP.equals(exchange.getRequest().getRemoteAddress().getAddress()
+                    .getHostAddress()));
     }
 
     private Mono<Void> authFailed(ServerWebExchange exchange) {
         ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(HttpStatus.UNAUTHORIZED);
-        BaseResponse commonResponse = new BaseResponse();
-        commonResponse.setCode("90000401");
-        commonResponse.setMessage("鉴权失败");
-        DataBuffer buffer = exchange.getResponse().bufferFactory()
+        BaseResponse commonResponse = new BaseResponse(BaseResponseEnum.AUTH_FAILED.getCode(),
+            BaseResponseEnum.AUTH_FAILED
+                .getMessage());
+        DataBuffer buffer = response.bufferFactory()
             .wrap(JSON.toJSONString(commonResponse).getBytes(StandardCharsets.UTF_8));
 
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
