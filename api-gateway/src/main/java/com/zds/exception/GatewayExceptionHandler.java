@@ -31,6 +31,9 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
         DEBUG_LOG.error("[ApiGateway Exception], request url is: {}, exception is: {}",
             request.getPath(), ex.getMessage());
         ServerHttpResponse response = exchange.getResponse();
+        if (response.isCommitted()) {
+            return Mono.error(ex);
+        }
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         BaseResponse baseResponse = new BaseResponse(BaseResponseEnum.SERVICE_UNAVAILABLE.getCode(),
             BaseResponseEnum.SERVICE_UNAVAILABLE

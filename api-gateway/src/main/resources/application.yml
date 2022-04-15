@@ -11,15 +11,15 @@ spring:
           enabled: true # 开启通过服务名进行服务调用
           lower-case-service-id: true # 服务名不区分大小写
       routes:
-#        - id: database-service
-#          uri: lb://database-service
-#          predicates:
-#            - Path=/**
+        #        - id: database-service
+        #          uri: lb://database-service
+        #          predicates:
+        #            - Path=/**
         # id全局唯一即可
-#        - id: service-provider
-#          uri: lb://service-provider
-#          predicates:
-#            - Path=/**
+        #        - id: service-provider
+        #          uri: lb://service-provider
+        #          predicates:
+        #            - Path=/**
         - id: service-consumer
           uri: lb://service-consumer
           predicates:
@@ -34,3 +34,9 @@ spring:
 server:
   port: 9200
 
+logging:
+  config: classpath:logback-spring.xml
+
+security:
+  key:
+    sha256: AHGKLNVMOJCTUIPZ

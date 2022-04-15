@@ -3,6 +3,7 @@ package com.zds.filter;
 import com.alibaba.fastjson.JSON;
 import com.zds.enums.BaseResponseEnum;
 import com.zds.properties.PermissionProperties;
+import com.zds.properties.SecretKeyProperties;
 import com.zds.util.auth.JwtUtils;
 import com.zds.vo.response.BaseResponse;
 import java.nio.charset.StandardCharsets;
@@ -44,9 +45,13 @@ public class AccessFilter implements GlobalFilter, Ordered {
     @Resource
     private PermissionProperties permissionProperties;
 
+    @Resource
+    private SecretKeyProperties secretKeyProperties;
+
     @SneakyThrows
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        com.zds.util.auth.DigestUtils.sha256("zhongdongsheng");
         // url白名单过滤
         boolean isWhiteUrl = checkWhiteUrl(exchange);
         if (isWhiteUrl) {
@@ -134,6 +139,10 @@ public class AccessFilter implements GlobalFilter, Ordered {
         // 指定编码，否则在浏览器中会中文乱码
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         return response.writeWith(Mono.just(buffer));
+    }
+
+    private String sha256(String str) {
+        return org.apache.commons.codec.digest.DigestUtils.sha256Hex(str + secretKeyProperties);
     }
 
     @Override
