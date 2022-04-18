@@ -3,7 +3,8 @@
   <!-- 控制台日志 -->
   <appender name="ConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%d{yyyy-HH-mm hh:MM:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+      <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
+      <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0} -%msg%n</pattern>-->
     </encoder>
   </appender>
   <!-- 滚动文件日志 -->

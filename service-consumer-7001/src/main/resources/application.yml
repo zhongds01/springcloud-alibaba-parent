@@ -15,3 +15,6 @@ grpc:
       enable-keep-alive: true
       keep-alive-without-calls: true
       negotiation-type: plaintext
+
+logging:
+  config: classpath:logback-spring.xml

@@ -12,14 +12,10 @@
     <modules>
         <module>common-utils</module>
         <module>grpc-sdk</module>
+        <module>common-sdk</module>
     </modules>
 
     <artifactId>inner-integration</artifactId>
     <version>1.0.0</version>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
 
 </project>

@@ -37,6 +37,11 @@
             <artifactId>common-utils</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.zds</groupId>
+            <artifactId>common-sdk</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
     </dependencies>
 

@@ -1,6 +1,7 @@
 package com.zds.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.zds.constant.GatewayConstants;
 import com.zds.enums.BaseResponseEnum;
 import com.zds.properties.PermissionProperties;
 import com.zds.properties.SecretKeyProperties;
@@ -8,7 +9,6 @@ import com.zds.util.auth.JwtUtils;
 import com.zds.vo.response.BaseResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.function.Predicate;
 import javax.annotation.Resource;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -147,6 +147,6 @@ public class AccessFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 1;
+        return GatewayConstants.Ordered.ACCESS_FILTER;
     }
 }

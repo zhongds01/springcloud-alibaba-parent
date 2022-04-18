@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @RestController
 public class HelloController {
+
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -24,6 +25,7 @@ public class HelloController {
     @GetMapping("/consumer/hello/{value}")
     public String hello(@PathVariable String value) {
         // 远程调用service-provider服务中的hello接口
-        return restTemplate.getForObject("http://service-provider/provider/hello/" + value, String.class);
+        return restTemplate
+            .getForObject("http://service-provider/provider/hello/" + value, String.class);
     }
 }

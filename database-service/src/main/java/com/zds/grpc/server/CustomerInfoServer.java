@@ -5,6 +5,7 @@ import com.zds.grpc.grpc.CustomerInfo;
 import com.zds.grpc.grpc.CustomerRequest;
 import com.zds.grpc.grpc.CustomerResponse;
 import com.zds.grpc.grpc.api.CustomerInfoServiceGrpc;
+import com.zds.interceptor.RpcServerInterceptor;
 import com.zds.service.CustomerService;
 import io.grpc.stub.StreamObserver;
 import java.util.Collections;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -20,15 +23,18 @@ import org.springframework.util.CollectionUtils;
  * @author zhongdongsheng
  * @since 2022/3/29
  */
+//@GrpcService(interceptors = {RpcServerInterceptor.class})
 @GrpcService
 @RequiredArgsConstructor
 public class CustomerInfoServer extends CustomerInfoServiceGrpc.CustomerInfoServiceImplBase {
+    public static final Logger DEBUG_LOGGER = LoggerFactory.getLogger("debugLogger");
 
     private final CustomerService customerService;
 
     @Override
     public void getCustomerInfoByName(CustomerRequest request,
         StreamObserver<CustomerResponse> responseObserver) {
+        DEBUG_LOGGER.info("[Grpc Invoke Start], method: getCustomerInfoByName. request: {}", request);
         List<Customer> customers = customerService.selectOneCustomerByName(request.getName());
         CustomerResponse response;
         if (CollectionUtils.isEmpty(customers)) {
@@ -44,5 +50,6 @@ public class CustomerInfoServer extends CustomerInfoServiceGrpc.CustomerInfoServ
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+        DEBUG_LOGGER.info("[Grpc Invoke Finish], method: getCustomerInfoByName. request: {}", request);
     }
 }
