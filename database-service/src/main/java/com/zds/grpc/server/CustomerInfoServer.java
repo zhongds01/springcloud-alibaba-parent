@@ -5,14 +5,12 @@ import com.zds.grpc.grpc.CustomerInfo;
 import com.zds.grpc.grpc.CustomerRequest;
 import com.zds.grpc.grpc.CustomerResponse;
 import com.zds.grpc.grpc.api.CustomerInfoServiceGrpc;
-import com.zds.interceptor.RpcServerInterceptor;
+import com.zds.grpc.interceptor.GrpcServerInterceptor;
 import com.zds.service.CustomerService;
 import io.grpc.stub.StreamObserver;
-import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
-
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -23,8 +21,7 @@ import org.springframework.util.CollectionUtils;
  * @author zhongdongsheng
  * @since 2022/3/29
  */
-//@GrpcService(interceptors = {RpcServerInterceptor.class})
-@GrpcService
+@GrpcService(interceptors = {GrpcServerInterceptor.class})
 @RequiredArgsConstructor
 public class CustomerInfoServer extends CustomerInfoServiceGrpc.CustomerInfoServiceImplBase {
     public static final Logger DEBUG_LOGGER = LoggerFactory.getLogger("debugLogger");

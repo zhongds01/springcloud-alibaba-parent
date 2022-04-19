@@ -18,6 +18,10 @@
         <lombok.version>1.18.20</lombok.version>
         <!-- 子工程定义变量名称与父工程一样后，子工程变量优先级较高 -->
         <spring-boot.version>2.6.3</spring-boot.version>
+        <protobuf-java.version>3.18.2</protobuf-java.version>
+        <grpc.version>1.42.2</grpc.version>
+        <grpc-client.version>2.13.1.RELEASE</grpc-client.version>
+        <grpc-server.version>2.13.1.RELEASE</grpc-server.version>
     </properties>
 
     <modules>

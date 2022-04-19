@@ -3,7 +3,7 @@
   <!-- 控制台日志 -->
   <appender name="ConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%d{yyyy-HH-mm hh:MM:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
     </encoder>
   </appender>
   <!-- 滚动文件日志 -->
@@ -15,7 +15,7 @@
       <maxHistory>7</maxHistory>
     </rollingPolicy>
     <encoder>
-      <pattern>[%X{traceID}] %d [%thread] %-5level %logger{35} - %msg%n</pattern>
+      <pattern>[%X{traceID}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
     </encoder>
   </appender>
 
