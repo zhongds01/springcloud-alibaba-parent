@@ -26,9 +26,9 @@ public class GrpcClientInterceptor implements ClientInterceptor {
     @Override
     public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(
         MethodDescriptor<ReqT, RespT> methodDescriptor, CallOptions callOptions, Channel channel) {
-        String traceID = MDC.get("traceID");
         return new ForwardingClientCall.SimpleForwardingClientCall<ReqT, RespT>(
             channel.newCall(methodDescriptor, callOptions)) {
+            final String traceID = MDC.get("traceID");
             @Override
             public void start(Listener<RespT> responseListener, Metadata headers) {
                 headers.put(TRACE_ID, traceID);

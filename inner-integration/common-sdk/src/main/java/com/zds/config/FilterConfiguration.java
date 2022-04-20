@@ -13,9 +13,10 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class FilterConfiguration {
+
     @Bean
-    public FilterRegistrationBean filterRegistrationBean() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+    public FilterRegistrationBean<TraceIDFilter> filterRegistrationBean() {
+        FilterRegistrationBean<TraceIDFilter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new TraceIDFilter());
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;

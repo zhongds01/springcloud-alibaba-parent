@@ -21,12 +21,6 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
-        <!-- grpc客户端 -->
-        <dependency>
-            <groupId>net.devh</groupId>
-            <artifactId>grpc-client-spring-boot-starter</artifactId>
-            <version>2.13.1.RELEASE</version>
-        </dependency>
         <dependency>
             <groupId>com.zds</groupId>
             <artifactId>grpc-sdk</artifactId>
@@ -41,6 +35,10 @@
             <groupId>com.zds</groupId>
             <artifactId>common-sdk</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-loadbalancer</artifactId>
         </dependency>
 
     </dependencies>

@@ -1,5 +1,7 @@
 package com.zds.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,8 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class HelloController {
+
+    public static final Logger DEBUG_LOGGER = LoggerFactory.getLogger("debugLogger");
+
     @GetMapping("/provider/hello/{value}")
     public String hello(@PathVariable String value) {
+        DEBUG_LOGGER.info("Service-provider-8001 Receive request, requestParam is: {}", value);
         return "Hello Nacos Discovery " + value;
     }
+
 }
