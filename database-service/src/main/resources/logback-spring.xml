@@ -4,7 +4,6 @@
   <appender name="ConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
-      <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0} -%msg%n</pattern>-->
     </encoder>
   </appender>
   <!-- 滚动文件日志 -->
@@ -12,11 +11,19 @@
     <file>log/debug/debug.log</file>
     <!-- 1 基于时间滚动生成日志文件 -->
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>log/debug/debug_%d{yyyyMMdd}.log</fileNamePattern>
-      <maxHistory>7</maxHistory>
+      <FileNamePattern>log/debug/debug_%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+      <maxHistory>3</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
+      <!--按大小分割同一天的-->
+      <timeBasedFileNamingAndTriggeringPolicy
+        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>50MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+
     </rollingPolicy>
     <encoder>
-      <pattern>[%X{traceID}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</pattern>
+      <pattern>[%X{traceID}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n
+      </pattern>
     </encoder>
   </appender>
 

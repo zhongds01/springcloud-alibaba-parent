@@ -1,11 +1,15 @@
 package com.zds.exception;
 
 import com.alibaba.fastjson.JSON;
+import com.zds.constant.GatewayConstants;
+import com.zds.constant.GatewayConstants.RequestHeader;
 import com.zds.enums.BaseResponseEnum;
 import com.zds.vo.response.BaseResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +32,10 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
         ServerHttpRequest request = exchange.getRequest();
+        String traceID = Objects.requireNonNull(request.getHeaders().get(RequestHeader.TRACE_ID))
+            .get(0);
+
+        MDC.put(GatewayConstants.TRACE_ID, traceID);
         DEBUG_LOG.error("[ApiGateway Exception], request url is: {}, exception is: {}",
             request.getPath(), ex.getMessage());
         ServerHttpResponse response = exchange.getResponse();
