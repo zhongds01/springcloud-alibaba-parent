@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @since 2022/4/1
  */
 @Service
-public class CustomerInfoService {
+public class RpcCustomerInfoService {
 
     @GrpcClient(value = "database-service", interceptors = {GrpcClientInterceptor.class})
     private CustomerInfoServiceGrpc.CustomerInfoServiceBlockingStub customerInfoServiceBlockingStub;
