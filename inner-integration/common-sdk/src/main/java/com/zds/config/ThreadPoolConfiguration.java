@@ -34,6 +34,7 @@ public class ThreadPoolConfiguration {
         executor.setKeepAliveSeconds(60);
         // 线程名称前缀
         executor.setThreadNamePrefix("Async-thread-");
+        executor.setTaskDecorator(new ThreadContextDecorator());
         // 是否等待所有线程执行完毕才关闭线程池，默认值为false
         executor.setWaitForTasksToCompleteOnShutdown(true);
         // waitForTasksToCompleteOnShutdown的等待的时长，默认值为0，即不等待
