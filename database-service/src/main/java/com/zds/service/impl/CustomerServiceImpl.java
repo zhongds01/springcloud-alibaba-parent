@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 
-@Service(value = "customerServiceImpl")
+@Service
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     CustomerMapper customerMapper;

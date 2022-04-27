@@ -11,7 +11,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: zhongdongsheng
-    password: 123456
+    password: DS@71b6e2b5b0c5390c1f9ec2c918d7d686
     url: jdbc:mysql://localhost:3306/tutu?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
   application:
     name: database-service
@@ -20,6 +20,8 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
         enabled: true
+  redis:
+    username:
 mybatis:
   mapper-locations: com/zds/mapper/*.xml
   type-aliases-package: com.zds.entity
@@ -28,3 +30,4 @@ mybatis:
 
 logging:
   config: classpath:logback-spring.xml
+
