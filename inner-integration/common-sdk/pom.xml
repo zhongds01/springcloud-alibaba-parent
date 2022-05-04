@@ -29,6 +29,22 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
+    <!-- redis依赖 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <!-- protostuff序列化依赖 -->
+    <dependency>
+      <groupId>io.protostuff</groupId>
+      <artifactId>protostuff-runtime</artifactId>
+      <version>${protostuff.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.protostuff</groupId>
+      <artifactId>protostuff-core</artifactId>
+      <version>${protostuff.version}</version>
+    </dependency>
 
   </dependencies>
 

@@ -31,7 +31,8 @@ public class CustomerInfoServer extends CustomerInfoServiceGrpc.CustomerInfoServ
     @Override
     public void getCustomerInfoByName(CustomerRequest request,
         StreamObserver<CustomerResponse> responseObserver) {
-        DEBUG_LOGGER.info("[Grpc Invoke Start], method: getCustomerInfoByName. request: {}", request);
+        DEBUG_LOGGER.info("[Grpc Invoke Start], method: getCustomerInfoByName. request: {}",
+            request.getName());
         List<Customer> customers = customerService.selectOneCustomerByName(request.getName());
         CustomerResponse response;
         if (CollectionUtils.isEmpty(customers)) {
@@ -47,6 +48,7 @@ public class CustomerInfoServer extends CustomerInfoServiceGrpc.CustomerInfoServ
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
-        DEBUG_LOGGER.info("[Grpc Invoke Finish], method: getCustomerInfoByName. request: {}", request);
+        DEBUG_LOGGER.info("[Grpc Invoke Finish], method: getCustomerInfoByName. request: {}",
+            request.getName());
     }
 }

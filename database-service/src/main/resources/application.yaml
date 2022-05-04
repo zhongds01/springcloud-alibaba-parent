@@ -21,7 +21,16 @@ spring:
         server-addr: 127.0.0.1:8848
         enabled: true
   redis:
+    host: 192.168.1.127
+    port: 6379
     username:
+    password:
+    lettuce:
+      pool:
+        max-active: 8 # 最大连接数
+        max-idle: 8 # 最大空闲连接
+        min-idle: 0 # 最小空闲连接
+        max-wait: 1ms # 当连接池耗尽后，抛出异常前最大阻塞时间
 mybatis:
   mapper-locations: com/zds/mapper/*.xml
   type-aliases-package: com.zds.entity
@@ -30,4 +39,5 @@ mybatis:
 
 logging:
   config: classpath:logback-spring.xml
+
 
