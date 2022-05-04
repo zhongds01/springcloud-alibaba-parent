@@ -30,4 +30,15 @@ public class RpcCustomerInfoService {
 
         return null;
     }
+
+    public CustomerInfo saveCustomerInfo(String name) {
+        CustomerRequest customerRequest = CustomerRequest.newBuilder().setName(name).build();
+        CustomerResponse response = customerInfoServiceBlockingStub
+            .saveCustomerInfo(customerRequest);
+        if (response.getCode().equals("0")) {
+            return response.getData();
+        }
+
+        return null;
+    }
 }

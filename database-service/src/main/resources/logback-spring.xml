@@ -27,11 +27,34 @@
     </encoder>
   </appender>
 
+  <appender name="kafkaLogger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>log/kafka/kafka.log</file>
+    <!-- 1 基于时间滚动生成日志文件 -->
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>log/kafka/kafka_%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+      <maxHistory>3</maxHistory>
+      <totalSizeCap>1GB</totalSizeCap>
+      <!--按大小分割同一天的-->
+      <timeBasedFileNamingAndTriggeringPolicy
+        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>50MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+
+    </rollingPolicy>
+    <encoder>
+      <pattern>[%X{traceID}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+
   <root level="info">
     <appender-ref ref="ConsoleAppender"/>
   </root>
   <logger name="debugLogger" level="info" additivity="false">
     <appender-ref ref="RollingFileAppender"/>
+  </logger>
+  <logger name="kafkaLogger" level="info" additivity="false">
+    <appender-ref ref="kafkaLogger"/>
   </logger>
 
 </configuration>

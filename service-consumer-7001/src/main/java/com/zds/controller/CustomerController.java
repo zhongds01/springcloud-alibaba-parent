@@ -1,5 +1,6 @@
 package com.zds.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import com.zds.enums.BaseResponseEnum;
 import com.zds.grpc.client.RpcCustomerInfoService;
 import com.zds.grpc.grpc.CustomerInfo;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,6 +72,13 @@ public class CustomerController {
         customerInfoService
             .forwardNotify(customerInfoVO.getName(), customerInfoVO.getTel());
 
+        return new BaseResponse(BaseResponseEnum.SUCCESS.getCode(), BaseResponseEnum.SUCCESS
+            .getMessage());
+    }
+
+    @PostMapping(path = "/customer/save")
+    public BaseResponse saveCustomerInfo(@RequestBody CustomerInfoVO customerInfoVO) {
+        rpcCustomerInfoService.saveCustomerInfo(customerInfoVO.getName());
         return new BaseResponse(BaseResponseEnum.SUCCESS.getCode(), BaseResponseEnum.SUCCESS
             .getMessage());
     }

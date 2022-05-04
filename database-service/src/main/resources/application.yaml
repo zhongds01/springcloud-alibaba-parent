@@ -31,6 +31,21 @@ spring:
         max-idle: 8 # 最大空闲连接
         min-idle: 0 # 最小空闲连接
         max-wait: 1ms # 当连接池耗尽后，抛出异常前最大阻塞时间
+  ######kafka配置######
+  kafka:
+    producer:
+      acks: 1
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 3
+      batch-size: 16384
+      buffer-memory: 33554432
+    consumer:
+      group-id: dataSaveGroup
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: latest
+    bootstrap-servers: 192.168.1.127:9092
 mybatis:
   mapper-locations: com/zds/mapper/*.xml
   type-aliases-package: com.zds.entity

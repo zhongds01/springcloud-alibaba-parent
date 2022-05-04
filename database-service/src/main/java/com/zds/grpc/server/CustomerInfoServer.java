@@ -9,6 +9,7 @@ import com.zds.grpc.interceptor.GrpcServerInterceptor;
 import com.zds.service.CustomerService;
 import io.grpc.stub.StreamObserver;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
@@ -49,6 +50,31 @@ public class CustomerInfoServer extends CustomerInfoServiceGrpc.CustomerInfoServ
         responseObserver.onNext(response);
         responseObserver.onCompleted();
         DEBUG_LOGGER.info("[Grpc Invoke Finish], method: getCustomerInfoByName. request: {}",
+            request.getName());
+    }
+
+    @Override
+    public void saveCustomerInfo(CustomerRequest request,
+        StreamObserver<CustomerResponse> responseObserver) {
+        DEBUG_LOGGER.info("[Grpc Invoke Start], method: saveCustomerInfo. request: {}",
+            request.getName());
+        Customer customer = Customer.builder().id(1L).customerName(request.getName()).customerSex("男")
+            .build();
+        Integer row = customerService.saveInfo(customer);
+        CustomerResponse response;
+        if (row == null || row == 0) {
+            response =
+                CustomerResponse.newBuilder().setCode("400").setData(
+                    CustomerInfo.newBuilder().build()).build();
+        } else {
+            response =
+                CustomerResponse.newBuilder().setCode("0").setData(
+                    CustomerInfo.newBuilder().setName(request.getName()).build()).build();
+        }
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+        DEBUG_LOGGER.info("[Grpc Invoke Finish], method: saveCustomerInfo. request: {}",
             request.getName());
     }
 }

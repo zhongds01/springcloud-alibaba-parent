@@ -25,7 +25,7 @@ public interface CustomerService {
      * @return 记录条数
      * @throws IOException ex
      */
-    Integer insertCustomer(Customer customer) throws IOException;
+    Integer insertCustomer(Customer customer);
 
     /**
      * 根据客户id修改客户信息
@@ -43,4 +43,6 @@ public interface CustomerService {
     List<Customer> selectOneCustomer();
 
     List<Customer> selectOneCustomerByName(String name);
+
+    Integer saveInfo(Customer customer);
 }

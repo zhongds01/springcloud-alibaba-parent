@@ -1,9 +1,12 @@
 package com.zds.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.zds.entity.Customer;
 import com.zds.mapper.CustomerMapper;
 import com.zds.service.CustomerService;
+import com.zds.service.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,6 +16,9 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     CustomerMapper customerMapper;
+
+    @Autowired
+    private KafkaProducer kafkaProducer;
 
     @Override
     public List<Customer> selectOneCustomerById(Long id) {
@@ -30,14 +36,9 @@ public class CustomerServiceImpl implements CustomerService {
      */
     // @Transactional(rollbackFor = Exception.class)
     @Override
-    public Integer insertCustomer(Customer customer) throws IOException {
+    public Integer insertCustomer(Customer customer) {
         int rows = customerMapper.insertCustomer(customer);
-        try {
-            throw new IOException("io exception");
-        } catch (IOException e) {
-            throw e;
-        }
-        // return rows;
+         return rows;
     }
 
     @Override
@@ -53,5 +54,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Customer> selectOneCustomerByName(String name) {
         return customerMapper.selectOneCustomerByName(name);
+    }
+
+    @Override
+    public Integer saveInfo(Customer customer) {
+        kafkaProducer
+            .sendMessage("dataSave", 1, String.valueOf(customer.getId()),
+                JSON.toJSONString(customer));
+        return 1;
     }
 }

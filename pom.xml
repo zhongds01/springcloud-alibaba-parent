@@ -23,6 +23,9 @@
         <grpc-client.version>2.13.1.RELEASE</grpc-client.version>
         <grpc-server.version>2.13.1.RELEASE</grpc-server.version>
         <protostuff.version>1.7.4</protostuff.version>
+        <mybatis.version>2.2.0</mybatis.version>
+        <jasypt.version>3.0.3</jasypt.version>
+        <fastjson.version>1.2.80</fastjson.version>
     </properties>
 
     <modules>
