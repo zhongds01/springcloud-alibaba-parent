@@ -1,10 +1,13 @@
 package com.zds.config;
 
+import java.util.Map;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.common.config.TopicConfig;
-import org.apache.kafka.common.internals.Topic;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.config.KafkaListenerContainerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
 /**
  * KafkaConfiguration
@@ -20,4 +23,17 @@ public class KafkaConfiguration {
         return new NewTopic("dataSave", 1, (short) 1);
     }
 
+    /**
+     * 配置支持批量消费的消费者监听工厂
+     */
+    @Bean
+    public KafkaListenerContainerFactory<?> batchFactory(KafkaProperties kafkaProperties) {
+        Map<String, Object> map = kafkaProperties.buildConsumerProperties();
+        ConcurrentKafkaListenerContainerFactory<String, String> factory
+            = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(map));
+        factory.setBatchListener(true);
+
+        return factory;
+    }
 }

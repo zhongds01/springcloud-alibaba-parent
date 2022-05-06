@@ -5,12 +5,9 @@ import com.zds.entity.Customer;
 import com.zds.mapper.CustomerMapper;
 import com.zds.service.CustomerService;
 import com.zds.service.KafkaProducer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -59,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Integer saveInfo(Customer customer) {
         kafkaProducer
-            .sendMessage("dataSave", 1, String.valueOf(customer.getId()),
+            .sendMessage("dataSave", 0, String.valueOf(customer.getId()),
                 JSON.toJSONString(customer));
         return 1;
     }

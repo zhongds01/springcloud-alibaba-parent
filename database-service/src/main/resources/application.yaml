@@ -45,6 +45,10 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       auto-offset-reset: latest
+      enable-auto-commit: false
+    listener:
+      ack-mode: manual
+      type: batch
     bootstrap-servers: 192.168.1.127:9092
 mybatis:
   mapper-locations: com/zds/mapper/*.xml
