@@ -25,4 +25,12 @@ public class CustomerInfoVO {
     private String name;
 
     private String tel;
+
+    private String password;
+
+    private String address;
+
+    private String email;
+
+    private String sex;
 }

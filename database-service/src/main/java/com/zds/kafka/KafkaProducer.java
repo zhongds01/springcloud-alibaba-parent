@@ -1,4 +1,4 @@
-package com.zds.service;
+package com.zds.kafka;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +19,17 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 public class KafkaProducer {
 
     public static final Logger KAFKA_LOGGER = LoggerFactory.getLogger("kafkaLogger");
+
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
+    /**
+     *
+     * @param topic 主题
+     * @param partition 分区，当前一个分区，所以是0
+     * @param key key
+     * @param dataJson 数据
+     */
     public void sendMessage(String topic, Integer partition, String key, String dataJson) {
         ListenableFuture<SendResult<String, String>> future = kafkaTemplate
             .send(topic, partition, key, dataJson);

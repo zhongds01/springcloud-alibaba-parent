@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.ContainerProperties.AckMode;
 
 /**
  * KafkaConfiguration
@@ -18,6 +19,11 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 @Configuration
 public class KafkaConfiguration {
 
+    /**
+     * 创建一个主题名为dataSave，1个分区，1个副本的主题
+     *
+     * @return
+     */
     @Bean
     public NewTopic dataSaveTopic() {
         return new NewTopic("dataSave", 1, (short) 1);
@@ -32,6 +38,7 @@ public class KafkaConfiguration {
         ConcurrentKafkaListenerContainerFactory<String, String> factory
             = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(new DefaultKafkaConsumerFactory<>(map));
+        factory.getContainerProperties().setAckMode(AckMode.MANUAL);
         factory.setBatchListener(true);
 
         return factory;

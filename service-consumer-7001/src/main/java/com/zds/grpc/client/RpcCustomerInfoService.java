@@ -1,10 +1,12 @@
 package com.zds.grpc.client;
 
-import com.zds.grpc.grpc.CustomerInfo;
-import com.zds.grpc.grpc.CustomerRequest;
-import com.zds.grpc.grpc.CustomerResponse;
-import com.zds.grpc.grpc.api.CustomerInfoServiceGrpc;
+import com.zds.grpc.api.CustomerInfo;
+import com.zds.grpc.api.CustomerInfoServiceGrpc;
+import com.zds.grpc.api.CustomerRequest;
+import com.zds.grpc.api.CustomerResponse;
+import com.zds.grpc.constant.GrpcConstants.GrpcCode;
 import com.zds.grpc.interceptor.GrpcClientInterceptor;
+import com.zds.vo.request.CustomerInfoVO;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 
@@ -21,24 +23,28 @@ public class RpcCustomerInfoService {
     private CustomerInfoServiceGrpc.CustomerInfoServiceBlockingStub customerInfoServiceBlockingStub;
 
     public CustomerInfo queryCustomerInfoByName(String name) {
-        CustomerRequest customerRequest = CustomerRequest.newBuilder().setName(name).build();
+        CustomerRequest customerRequest = CustomerRequest.newBuilder().setCustomerName(name).build();
         CustomerResponse response = customerInfoServiceBlockingStub
             .getCustomerInfoByName(customerRequest);
-        if (response.getCode().equals("0")) {
+        if (response.getCode().equals(GrpcCode.SUCCESS)) {
             return response.getData();
         }
 
         return null;
     }
 
-    public CustomerInfo saveCustomerInfo(String name) {
-        CustomerRequest customerRequest = CustomerRequest.newBuilder().setName(name).build();
+    public boolean saveCustomerInfo(CustomerInfoVO customerInfoVO) {
+        CustomerRequest customerRequest = CustomerRequest.newBuilder()
+            .setCustomerName(customerInfoVO.getName())
+            .setCustomerEmail(customerInfoVO.getEmail())
+            .setCustomerAddress(customerInfoVO.getAddress())
+            .setCustomerSex(customerInfoVO.getSex())
+            .setCustomerTel(customerInfoVO.getTel())
+            .setPassword(customerInfoVO.getPassword())
+            .build();
         CustomerResponse response = customerInfoServiceBlockingStub
             .saveCustomerInfo(customerRequest);
-        if (response.getCode().equals("0")) {
-            return response.getData();
-        }
 
-        return null;
+        return response.getCode().equals(GrpcCode.SUCCESS);
     }
 }

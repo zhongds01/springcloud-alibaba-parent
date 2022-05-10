@@ -1,9 +1,8 @@
 package com.zds.controller;
 
-import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import com.zds.enums.BaseResponseEnum;
+import com.zds.grpc.api.CustomerInfo;
 import com.zds.grpc.client.RpcCustomerInfoService;
-import com.zds.grpc.grpc.CustomerInfo;
 import com.zds.service.CustomerInfoService;
 import com.zds.vo.request.CustomerInfoVO;
 import com.zds.vo.response.BaseResponse;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.parameters.P;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,23 +45,27 @@ public class CustomerController {
         CustomerInfoData customerInfoData = null;
 
         if (customerInfo != null) {
-            customerInfoData = new CustomerInfoData();
-            customerInfoData.setName(customerInfo.getName());
-            customerInfoData.setSex(customerInfo.getSex());
+            customerInfoData = CustomerInfoData.builder().name(customerInfo.getCustomerName())
+                .sex(customerInfo.getCustomerSex()).address(customerInfo.getCustomerAddress())
+                .tel(customerInfo.getCustomerTel()).email(customerInfo.getCustomerEmail())
+                .address(customerInfo.getCustomerAddress())
+                .build();
         } else {
             customerInfo = rpcCustomerInfoService
                 .queryCustomerInfoByName(customerInfoVO.getName());
             if (customerInfo != null) {
-                customerInfoData = new CustomerInfoData();
-                customerInfoData.setName(customerInfo.getName());
-                customerInfoData.setSex(customerInfo.getSex());
+                customerInfoData = CustomerInfoData.builder().name(customerInfo.getCustomerName())
+                    .sex(customerInfo.getCustomerSex()).address(customerInfo.getCustomerAddress())
+                    .tel(customerInfo.getCustomerTel()).email(customerInfo.getCustomerEmail())
+                    .address(customerInfo.getCustomerAddress())
+                    .build();
                 redisTemplate.opsForValue()
-                    .set("customer-" + customerInfo.getName(), customerInfo, 60L, TimeUnit.SECONDS);
+                    .set("customer-" + customerInfo.getCustomerName(), customerInfo, 60L, TimeUnit.SECONDS);
             }
         }
 
-        return new CommonResponse<>("0",
-            "Success",
+        return new CommonResponse<>(BaseResponseEnum.SUCCESS.getCode(),
+            BaseResponseEnum.SUCCESS.getMessage(),
             customerInfoData);
     }
 
@@ -78,8 +80,13 @@ public class CustomerController {
 
     @PostMapping(path = "/customer/save")
     public BaseResponse saveCustomerInfo(@RequestBody CustomerInfoVO customerInfoVO) {
-        rpcCustomerInfoService.saveCustomerInfo(customerInfoVO.getName());
-        return new BaseResponse(BaseResponseEnum.SUCCESS.getCode(), BaseResponseEnum.SUCCESS
+        boolean result = rpcCustomerInfoService.saveCustomerInfo(customerInfoVO);
+        if (result) {
+            return new BaseResponse(BaseResponseEnum.SUCCESS.getCode(), BaseResponseEnum.SUCCESS
+                .getMessage());
+        }
+        return new BaseResponse(BaseResponseEnum.FAILED.getCode(), BaseResponseEnum.FAILED
             .getMessage());
+
     }
 }

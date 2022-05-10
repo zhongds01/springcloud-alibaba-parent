@@ -1,8 +1,4 @@
-package com.zds.grpc.grpc.api;
-
-import com.zds.grpc.grpc.CustomerInfoProto;
-import com.zds.grpc.grpc.CustomerRequest;
-import com.zds.grpc.grpc.CustomerResponse;
+package com.zds.grpc.api;
 
 import static io.grpc.MethodDescriptor.generateFullMethodName;
 
@@ -10,7 +6,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.42.2)",
-    comments = "Source: CustomerInfoService.proto_1")
+    comments = "Source: CustomerInfoService.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class CustomerInfoServiceGrpc {
 
@@ -20,7 +16,7 @@ public final class CustomerInfoServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<CustomerRequest,
-          CustomerResponse> getGetCustomerInfoByNameMethod;
+      CustomerResponse> getGetCustomerInfoByNameMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "GetCustomerInfoByName",
@@ -48,6 +44,37 @@ public final class CustomerInfoServiceGrpc {
       }
     }
     return getGetCustomerInfoByNameMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<CustomerRequest,
+      CustomerResponse> getSaveCustomerInfoMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "SaveCustomerInfo",
+      requestType = CustomerRequest.class,
+      responseType = CustomerResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<CustomerRequest,
+      CustomerResponse> getSaveCustomerInfoMethod() {
+    io.grpc.MethodDescriptor<CustomerRequest, CustomerResponse> getSaveCustomerInfoMethod;
+    if ((getSaveCustomerInfoMethod = CustomerInfoServiceGrpc.getSaveCustomerInfoMethod) == null) {
+      synchronized (CustomerInfoServiceGrpc.class) {
+        if ((getSaveCustomerInfoMethod = CustomerInfoServiceGrpc.getSaveCustomerInfoMethod) == null) {
+          CustomerInfoServiceGrpc.getSaveCustomerInfoMethod = getSaveCustomerInfoMethod =
+              io.grpc.MethodDescriptor.<CustomerRequest, CustomerResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SaveCustomerInfo"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  CustomerRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  CustomerResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new CustomerInfoServiceMethodDescriptorSupplier("SaveCustomerInfo"))
+              .build();
+        }
+      }
+    }
+    return getSaveCustomerInfoMethod;
   }
 
   /**
@@ -101,8 +128,15 @@ public final class CustomerInfoServiceGrpc {
     /**
      */
     public void getCustomerInfoByName(CustomerRequest request,
-                                      io.grpc.stub.StreamObserver<CustomerResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<CustomerResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetCustomerInfoByNameMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void saveCustomerInfo(CustomerRequest request,
+        io.grpc.stub.StreamObserver<CustomerResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSaveCustomerInfoMethod(), responseObserver);
     }
 
     @Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -114,6 +148,13 @@ public final class CustomerInfoServiceGrpc {
                 CustomerRequest,
                 CustomerResponse>(
                   this, METHODID_GET_CUSTOMER_INFO_BY_NAME)))
+          .addMethod(
+            getSaveCustomerInfoMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                CustomerRequest,
+                CustomerResponse>(
+                  this, METHODID_SAVE_CUSTOMER_INFO)))
           .build();
     }
   }
@@ -135,9 +176,17 @@ public final class CustomerInfoServiceGrpc {
     /**
      */
     public void getCustomerInfoByName(CustomerRequest request,
-                                      io.grpc.stub.StreamObserver<CustomerResponse> responseObserver) {
+        io.grpc.stub.StreamObserver<CustomerResponse> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetCustomerInfoByNameMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void saveCustomerInfo(CustomerRequest request,
+        io.grpc.stub.StreamObserver<CustomerResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getSaveCustomerInfoMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -160,6 +209,13 @@ public final class CustomerInfoServiceGrpc {
     public CustomerResponse getCustomerInfoByName(CustomerRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetCustomerInfoByNameMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public CustomerResponse saveCustomerInfo(CustomerRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getSaveCustomerInfoMethod(), getCallOptions(), request);
     }
   }
 
@@ -184,9 +240,18 @@ public final class CustomerInfoServiceGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetCustomerInfoByNameMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<CustomerResponse> saveCustomerInfo(
+        CustomerRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getSaveCustomerInfoMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_GET_CUSTOMER_INFO_BY_NAME = 0;
+  private static final int METHODID_SAVE_CUSTOMER_INFO = 1;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -207,6 +272,10 @@ public final class CustomerInfoServiceGrpc {
       switch (methodId) {
         case METHODID_GET_CUSTOMER_INFO_BY_NAME:
           serviceImpl.getCustomerInfoByName((CustomerRequest) request,
+              (io.grpc.stub.StreamObserver<CustomerResponse>) responseObserver);
+          break;
+        case METHODID_SAVE_CUSTOMER_INFO:
+          serviceImpl.saveCustomerInfo((CustomerRequest) request,
               (io.grpc.stub.StreamObserver<CustomerResponse>) responseObserver);
           break;
         default:
@@ -271,6 +340,7 @@ public final class CustomerInfoServiceGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new CustomerInfoServiceFileDescriptorSupplier())
               .addMethod(getGetCustomerInfoByNameMethod())
+              .addMethod(getSaveCustomerInfoMethod())
               .build();
         }
       }

@@ -2,9 +2,9 @@ package com.zds.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.zds.entity.Customer;
+import com.zds.kafka.KafkaProducer;
 import com.zds.mapper.CustomerMapper;
 import com.zds.service.CustomerService;
-import com.zds.service.KafkaProducer;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

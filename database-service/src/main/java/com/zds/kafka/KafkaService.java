@@ -1,10 +1,10 @@
-package com.zds.service;
+package com.zds.kafka;
 
 import com.alibaba.fastjson.JSON;
 import com.zds.entity.Customer;
 import com.zds.mapper.CustomerMapper;
+import java.util.List;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +55,14 @@ public class KafkaService {
      * @param ack     ack
      */
     @KafkaListener(topics = {"dataSave"}, containerFactory = "batchFactory")
-    public void batchProcessDataSave(ConsumerRecords<String, String> records, Acknowledgment ack) {
+    public void batchProcessDataSave(List<ConsumerRecord<String, String>> records, Acknowledgment ack) {
         KAFKA_LOGGER.info("[Topic]: {}, begin to batch process", "dataSave");
         if (records.isEmpty()) {
             KAFKA_LOGGER.error("[Topic]: {}, records size is 0", "dataSave");
             return;
         }
 
+        // todo: 支持批量插入
         records.forEach(record -> {
             KAFKA_LOGGER.info("[Topic]: {}, begin to consumer", "dataSave");
             Customer customer = JSON.parseObject(record.value(), Customer.class);

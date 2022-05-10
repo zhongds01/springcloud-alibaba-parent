@@ -9,7 +9,8 @@ package com.zds.enums;
 public enum BaseResponseEnum {
     SERVICE_UNAVAILABLE("7100400", "Service Unavailable"),
     SUCCESS("7100200", "Success"),
-    AUTH_FAILED("7100401", "Auth Failed");
+    AUTH_FAILED("7100401", "Auth Failed"),
+    FAILED("7100500", "Failed");
 
     final String code;
 
