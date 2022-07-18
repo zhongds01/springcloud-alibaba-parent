@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<p>尊敬的<span th:text="${name}"></span>，您好；本次给您推送以下信息：</p>
+<table border="1">
+  <tr>
+    <td>正文</td>
+    <td th:text="${content}"></td>
+  </tr>
+</table>
+<div style="color: #ff1a0e">该邮件为系统自动发送邮件，请勿回复！</div>
+</body>
+</html>

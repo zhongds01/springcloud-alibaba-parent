@@ -1,0 +1,13 @@
+spring:
+  mail:
+    host: smtp.163.com
+    username: zhongds01@163.com
+    password: IKVTJWZKPJIWMWLW
+    port: 994
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: false
+            required: false
+        debug: true
