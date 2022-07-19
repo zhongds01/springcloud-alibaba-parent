@@ -1,5 +1,6 @@
 package com.zds.notification.controller;
 
+import com.zds.notification.service.EmailService;
 import com.zds.vo.request.EmailRequest;
 import com.zds.vo.response.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class EmailController {
     @Autowired
-    private EmailSerice emailSerice;
+    private EmailService emailService;
 
     @PostMapping(path = "/user/notification/email")
     public BaseResponse sendEmail(EmailRequest emailRequest) {
-
+        return null;
     }
 }

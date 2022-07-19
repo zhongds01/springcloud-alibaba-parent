@@ -1,8 +1,11 @@
 spring:
   mail:
+    send-to: 1246696804@qq.com
+    send-from: zhongds01@163.com
     host: smtp.163.com
     username: zhongds01@163.com
     password: IKVTJWZKPJIWMWLW
+    protocol: smtps
     port: 994
     properties:
       mail:
@@ -11,3 +14,4 @@ spring:
             enable: false
             required: false
         debug: true
+
